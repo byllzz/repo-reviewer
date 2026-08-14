@@ -14,6 +14,26 @@ npm run dev
 Then search e.g. `facebook/react`, `vuejs/core`, or paste a full
 `https://github.com/owner/repo` URL.
 
+## The locked preview
+
+Before you search, every panel is already rendered — with real components,
+not an abstract loading skeleton — using plausible placeholder data, then
+blurred with a centered lock icon. Searching "unlocks" each panel: the
+blur and lock icon animate away together, revealing the real data in
+place. Panels re-lock during a subsequent search and on an error, so
+there's never a moment showing stale results with no explanation.
+
+This is `components/Locked.tsx` (a thin wrapper: blur/opacity via CSS
+transition, the lock icon via Framer Motion's `AnimatePresence`) combined
+with `lib/placeholder.ts` (a fixture matching the real `RepoReview` shape)
+— every panel component only ever needs to know how to render a
+`RepoReview`, real or fake.
+
+## The README panel
+
+Tabs between a rendered **Preview** (markdown + GitHub-flavored tables/
+checklists) and **Raw** (the source text, monospaced) — `components/ReadmeTabs.tsx`.
+
 ## Stack
 
 React + TypeScript + Vite + **Tailwind CSS v4** (via `@tailwindcss/vite`,
@@ -36,9 +56,13 @@ Framer Motion for the entrance/gauge animations, lucide-react for icons.
   not presented as an objective "quality score," just one readable signal.
 - `lib/store.ts` — Zustand store for the current review, loading/error
   state, and recent searches (persisted to `localStorage`).
+- `lib/placeholder.ts` — fixture data conforming to the real `RepoReview`
+  type, used to render every panel in its locked state before a search.
+- `components/Locked.tsx` — the blur/lock-icon wrapper used around every
+  data panel.
+- `components/ReadmeTabs.tsx` — Preview/Raw tabs for the README panel.
 - `components/` — one component per panel (stats grid, language bar,
-  commit chart, contributors, health gauge, README preview), composed in
-  `App.tsx`.
+  commit chart, contributors, health gauge), composed in `App.tsx`.
 
 ## Notes on GitHub's API
 

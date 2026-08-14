@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { Github, Languages, GitCommitHorizontal, Users, BookOpen, ShieldCheck } from 'lucide-react'
 import { useReviewStore } from './lib/store'
 import { computeHealth } from './lib/health'
+import { PLACEHOLDER_REVIEW } from './lib/placeholder'
 import { SearchBar } from './components/SearchBar'
 import { RepoHeader } from './components/RepoHeader'
 import { StatsGrid } from './components/StatsGrid'
@@ -9,15 +10,21 @@ import { LanguageBar } from './components/LanguageBar'
 import { CommitActivityChart } from './components/CommitActivityChart'
 import { ContributorsList } from './components/ContributorsList'
 import { HealthPanel } from './components/HealthPanel'
-import { ReadmePreview } from './components/ReadmePreview'
+import { ReadmeTabs } from './components/ReadmeTabs'
 import { Panel } from './components/Panel'
+import { Locked } from './components/Locked'
 import { ThemeToggle } from './components/ThemeToggle'
-import { ReviewSkeleton } from './components/ReviewSkeleton'
 import { ErrorState } from './components/ErrorState'
 
 export default function App() {
   const { review, loading, error } = useReviewStore()
-  const health = useMemo(() => (review ? computeHealth(review) : null), [review])
+
+  // Everything renders from real data at all times — either the live review
+  // or a fixture — so the "locked" state is a visual treatment (blur + icon)
+  // over the real UI shape, not a separate skeleton implementation.
+  const locked = !review
+  const data = review ?? PLACEHOLDER_REVIEW
+  const health = useMemo(() => computeHealth(data), [data])
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -31,51 +38,59 @@ export default function App() {
         </div>
       </header>
 
-      <main className="flex-1 px-4 py-10 space-y-10">
+      <main className="flex-1 px-4 py-10 space-y-8">
         <div className="space-y-3 text-center max-w-xl mx-auto">
-          {!review && !loading && (
-            <>
-              <h1 className="text-3xl font-semibold tracking-tight">Review any GitHub repo</h1>
-              <p className="text-muted">
-                Stars, activity, contributors, languages, and a quick health read — in one clean view.
-              </p>
-            </>
-          )}
+          <h1 className="text-3xl font-semibold tracking-tight">Review any GitHub repo</h1>
+          <p className="text-muted">
+            Stars, activity, contributors, languages, and a quick health read — in one clean view.
+          </p>
         </div>
 
         <SearchBar />
 
-        {loading && <ReviewSkeleton />}
         {error && !loading && <ErrorState message={error} />}
 
-        {review && health && !loading && (
-          <div className="max-w-4xl mx-auto w-full space-y-6">
-            <RepoHeader info={review.info} />
-            <StatsGrid review={review} />
+        <div className="max-w-4xl mx-auto w-full space-y-6">
+          <Locked locked={locked || loading}>
+            <RepoHeader info={data.info} />
+          </Locked>
 
-            <div className="grid md:grid-cols-2 gap-4">
-              <Panel title="Languages" icon={Languages} delay={0.05}>
-                <LanguageBar languages={review.languages} />
-              </Panel>
+          <Locked locked={locked || loading}>
+            <StatsGrid review={data} />
+          </Locked>
 
-              <Panel title="Commit activity (52 weeks)" icon={GitCommitHorizontal} delay={0.1}>
-                <CommitActivityChart data={review.commitActivity} />
-              </Panel>
+          <div className="grid md:grid-cols-2 gap-4">
+            <Panel title="Languages" icon={Languages} delay={0.05}>
+              <Locked locked={locked || loading}>
+                <LanguageBar languages={data.languages} />
+              </Locked>
+            </Panel>
 
-              <Panel title="Top contributors" icon={Users} delay={0.15}>
-                <ContributorsList contributors={review.contributors} />
-              </Panel>
+            <Panel title="Commit activity (52 weeks)" icon={GitCommitHorizontal} delay={0.1}>
+              <Locked locked={locked || loading}>
+                <CommitActivityChart data={data.commitActivity} />
+              </Locked>
+            </Panel>
 
-              <Panel title="Health check" icon={ShieldCheck} delay={0.2}>
+            <Panel title="Top contributors" icon={Users} delay={0.15}>
+              <Locked locked={locked || loading}>
+                <ContributorsList contributors={data.contributors} />
+              </Locked>
+            </Panel>
+
+            <Panel title="Health check" icon={ShieldCheck} delay={0.2}>
+              <Locked locked={locked || loading}>
                 <HealthPanel health={health} />
-              </Panel>
-            </div>
-
-            <Panel title="README" icon={BookOpen} delay={0.25} className="md:col-span-2">
-              <ReadmePreview content={review.readme} />
+              </Locked>
             </Panel>
           </div>
-        )}
+
+          <Panel title="README" icon={BookOpen} delay={0.25} className="md:col-span-2">
+            <Locked locked={locked || loading}>
+              <ReadmeTabs content={data.readme} />
+            </Locked>
+          </Panel>
+        </div>
       </main>
 
       <footer className="text-center text-xs text-dim py-6">
