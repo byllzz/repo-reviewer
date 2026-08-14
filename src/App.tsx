@@ -29,6 +29,7 @@ import { ErrorState } from "./components/ErrorState";
 import { RateLimitBadge } from "./components/RateLimitBadge";
 import { UserReposGrid } from "./components/UserReposGrid";
 import { getCache, clearCache } from "./lib/cache";
+import type { RepoReview, UserProfile, UserRepoSummary } from "./lib/types";
 
 const GITHUB_REPO_URL = "https://github.com/byllzz/repo-reviewer";
 
@@ -61,7 +62,7 @@ export default function App() {
     const user = params.get("user");
 
     if (repo) {
-      const cached = getCache(`repo:${repo}`);
+      const cached = getCache<RepoReview>(`repo:${repo}`);
       if (cached) {
         setReview(cached);
         setInitialLoading(false);
@@ -69,7 +70,10 @@ export default function App() {
         search(repo).finally(() => setInitialLoading(false));
       }
     } else if (user) {
-      const cached = getCache(`user:${user}`);
+      const cached = getCache<{
+        profile: UserProfile;
+        repos: UserRepoSummary[];
+      }>(`user:${user}`);
       if (cached) {
         setUser(cached.profile, cached.repos);
         setInitialLoading(false);
