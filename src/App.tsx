@@ -1,9 +1,11 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { Github, Languages, GitCommitHorizontal, Users, BookOpen, ShieldCheck } from 'lucide-react'
 import { useReviewStore } from './lib/store'
 import { computeHealth } from './lib/health'
 import { PLACEHOLDER_REVIEW } from './lib/placeholder'
 import { SearchBar } from './components/SearchBar'
+import { CompactSearchBar } from './components/CompactSearchBar'
 import { RepoHeader } from './components/RepoHeader'
 import { StatsGrid } from './components/StatsGrid'
 import { LanguageBar } from './components/LanguageBar'
@@ -17,7 +19,8 @@ import { ThemeToggle } from './components/ThemeToggle'
 import { ErrorState } from './components/ErrorState'
 
 export default function App() {
-  const { review, loading, error } = useReviewStore()
+  const { review, loading, error, search } = useReviewStore()
+  const [searchExpanded, setSearchExpanded] = useState(true)
 
   // Everything renders from real data at all times — either the live review
   // or a fixture — so the "locked" state is a visual treatment (blur + icon)
@@ -25,6 +28,21 @@ export default function App() {
   const locked = !review
   const data = review ?? PLACEHOLDER_REVIEW
   const health = useMemo(() => computeHealth(data), [data])
+
+  // Deep-link support: `?repo=owner/name` on load triggers a search automatically.
+  useEffect(() => {
+    const repo = new URLSearchParams(window.location.search).get('repo')
+    if (repo) search(repo)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Collapse the hero + search input once a result lands; re-expand on demand.
+  useEffect(() => {
+    if (review && !loading) setSearchExpanded(false)
+    if (!review) setSearchExpanded(true)
+  }, [review, loading])
+
+  const showHero = searchExpanded || loading || !review
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -39,14 +57,35 @@ export default function App() {
       </header>
 
       <main className="flex-1 px-4 py-10 space-y-8">
-        <div className="space-y-3 text-center max-w-xl mx-auto">
-          <h1 className="text-3xl font-semibold tracking-tight">Review any GitHub repo</h1>
-          <p className="text-muted">
-            Stars, activity, contributors, languages, and a quick health read — in one clean view.
-          </p>
-        </div>
+        <AnimatePresence initial={false}>
+          {showHero && (
+            <motion.div
+              key="hero"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              className="overflow-hidden"
+            >
+              <div className="space-y-8">
+                <div className="space-y-3 text-center max-w-xl mx-auto">
+                  <h1 className="text-3xl font-semibold tracking-tight">Review any GitHub repo</h1>
+                  <p className="text-muted">
+                    Stars, activity, contributors, languages, and a quick health read — in one clean view.
+                  </p>
+                </div>
 
-        <SearchBar />
+                <SearchBar />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {!showHero && review && (
+            <CompactSearchBar fullName={review.info.full_name} onExpand={() => setSearchExpanded(true)} />
+          )}
+        </AnimatePresence>
 
         {error && !loading && <ErrorState message={error} />}
 

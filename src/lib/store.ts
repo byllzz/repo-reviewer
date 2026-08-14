@@ -51,6 +51,10 @@ export const useReviewStore = create<ReviewState>((set, get) => ({
       const review = await fetchRepoReview(parsed.owner, parsed.repo)
       set({ review, loading: false })
 
+      const url = new URL(window.location.href)
+      url.searchParams.set('repo', `${review.info.owner.login}/${review.info.name}`)
+      window.history.replaceState({}, '', url)
+
       const entry: RecentEntry = {
         owner: review.info.owner.login,
         repo: review.info.name,

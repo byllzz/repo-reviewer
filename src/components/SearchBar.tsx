@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Search, Github, ArrowRight } from 'lucide-react'
+import { Search, Github, ArrowRight, Loader2 } from 'lucide-react'
 import { useReviewStore } from '../lib/store'
 
 const EXAMPLES = ['facebook/react', 'vuejs/core', 'sveltejs/svelte', 'vitejs/vite']
@@ -9,7 +9,7 @@ export function SearchBar() {
   const { search, loading, recents } = useReviewStore()
 
   function submit(input: string) {
-    if (!input.trim()) return
+    if (!input.trim() || loading) return
     search(input)
   }
 
@@ -20,14 +20,21 @@ export function SearchBar() {
           e.preventDefault()
           submit(value)
         }}
-        className="flex items-center gap-2 bg-surface border border-border rounded-xl px-4 py-3 shadow-sm focus-within:border-accent/50 transition"
+        className={`flex items-center gap-2 bg-surface border border-border rounded-xl px-4 py-3 shadow-sm transition ${
+          loading ? 'opacity-70' : 'focus-within:border-accent/50'
+        }`}
       >
-        <Github size={18} className="text-dim shrink-0" />
+        {loading ? (
+          <Loader2 size={18} className="text-accent shrink-0 animate-spin" />
+        ) : (
+          <Github size={18} className="text-dim shrink-0" />
+        )}
         <input
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          placeholder="owner/repo or a github.com URL"
-          className="flex-1 bg-transparent outline-none text-sm placeholder:text-dim"
+          disabled={loading}
+          placeholder={loading ? 'Fetching repo data…' : 'owner/repo or a github.com URL'}
+          className="flex-1 bg-transparent outline-none text-sm placeholder:text-dim disabled:cursor-not-allowed"
         />
         <button
           type="submit"
@@ -46,11 +53,12 @@ export function SearchBar() {
         {EXAMPLES.map((ex) => (
           <button
             key={ex}
+            disabled={loading}
             onClick={() => {
               setValue(ex)
               submit(ex)
             }}
-            className="px-2.5 py-1 rounded-full border border-border text-muted hover:text-text hover:border-accent/50 transition"
+            className="px-2.5 py-1 rounded-full border border-border text-muted hover:text-text hover:border-accent/50 transition disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {ex}
           </button>
@@ -63,8 +71,9 @@ export function SearchBar() {
           {recents.map((r) => (
             <button
               key={`${r.owner}/${r.repo}`}
+              disabled={loading}
               onClick={() => submit(`${r.owner}/${r.repo}`)}
-              className="flex items-center gap-1.5 pl-1 pr-2.5 py-1 rounded-full border border-border text-muted hover:text-text hover:border-accent/50 transition"
+              className="flex items-center gap-1.5 pl-1 pr-2.5 py-1 rounded-full border border-border text-muted hover:text-text hover:border-accent/50 transition disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <img src={r.avatarUrl} alt="" className="w-4 h-4 rounded-full" />
               {r.owner}/{r.repo}
