@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --color-base: var(--ui-base);
+  --color-surface: var(--ui-surface);
+  --color-surface-2: var(--ui-surface-2);
+  --color-border: var(--ui-border);
+  --color-text: var(--ui-text);
+  --color-muted: var(--ui-text-muted);
+  --color-dim: var(--ui-text-dim);
+  --color-accent: var(--ui-accent);
+  --color-accent-strong: var(--ui-accent-strong);
+}
+
+:root {
+  --ui-base: #0a0a0c;
+  --ui-surface: #131316;
+  --ui-surface-2: #1b1b1f;
+  --ui-border: #262629;
+  --ui-text: #f4f4f5;
+  --ui-text-muted: #9f9fa8;
+  --ui-text-dim: #6b6b73;
+  --ui-accent: #818cf8;
+  --ui-accent-strong: #6366f1;
+}
+
+.light {
+  --ui-base: #f7f7f8;
+  --ui-surface: #ffffff;
+  --ui-surface-2: #f2f2f4;
+  --ui-border: #e4e4e7;
+  --ui-text: #18181b;
+  --ui-text-muted: #52525b;
+  --ui-text-dim: #a1a1aa;
+  --ui-accent: #6366f1;
+  --ui-accent-strong: #4f46e5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--ui-base);
+  color: var(--ui-text);
+  font-family: var(--font-sans);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--ui-border);
+  border-radius: 6px;
+}
+
+.markdown-body :is(h1, h2, h3) {
+  font-weight: 600;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+.markdown-body p {
+  line-height: 1.7;
+  margin-bottom: 1em;
+  color: var(--ui-text-muted);
+}
+.markdown-body code {
+  background: var(--ui-surface-2);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
+.markdown-body pre {
+  background: var(--ui-surface-2);
+  padding: 1em;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+.markdown-body pre code {
+  background: none;
+  padding: 0;
+}
+.markdown-body img {
+  max-width: 100%;
+  border-radius: 6px;
+}
+.markdown-body a {
+  color: var(--ui-accent);
+}
+.markdown-body ul,
+.markdown-body ol {
+  margin-bottom: 1em;
+  padding-left: 1.5em;
+  color: var(--ui-text-muted);
+}
