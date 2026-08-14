@@ -7,10 +7,10 @@ export function buildMarkdownReport(review: RepoReview, health: HealthResult): s
   const langList = Object.keys(languages).slice(0, 6).join(', ') || 'n/a'
   const topContributors = contributors
     .slice(0, 5)
-    .map((c) => `- [${c.login}](${c.html_url}) — ${c.contributions} commits`)
+    .map((c) => `- [${c.login}](${c.html_url}) - ${c.contributions} commits`)
     .join('\n')
 
-  return `# ${info.full_name} — Repo Review
+  return `# ${info.full_name} - Repo Review
 
 ${info.description ?? ''}
 

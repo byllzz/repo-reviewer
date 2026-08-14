@@ -2,7 +2,7 @@ import type { RepoReview } from './types'
 
 /**
  * Fake-but-plausible data so every panel can render its real component tree
- * before a search happens — blurred and locked, not an abstract skeleton.
+ * before a search happens - blurred and locked, not an abstract skeleton.
  * Never shown at full opacity; exact values don't matter, shape does.
  */
 export const PLACEHOLDER_REVIEW: RepoReview = {

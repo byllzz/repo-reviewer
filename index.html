@@ -3,8 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Repo Reviewer</title>
-    <meta name="description" content="Instantly review any public GitHub repository — languages, activity, contributors, and health, in one clean view." />
+    <title>Repo Reviewer - Instantly review any public GitHub repository</title>
+    <meta name="description" content="Instantly review any public GitHub repository - languages, activity, contributors, and health, in one clean view." />
+
+    <link rel="canonical" href="https://repo-reviewer.vercel.app/" />
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0a0a0c" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f7f7f8" media="(prefers-color-scheme: light)" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Repo Reviewer" />
+
+    <!-- Favicons -->
+    <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/icons/icon-32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/icons/icon-16.png" sizes="16x16" type="image/png" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#0a0a0c" />
+
+    <!-- Social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Repo Reviewer" />
+    <meta property="og:description" content="Instantly review any public GitHub repository or browse a user's repos — in one clean view." />
+    <meta property="og:url" content="https://repo-reviewer.vercel.app/" />
+    <meta property="og:image" content="https://repo-reviewer.vercel.app/icons/icon-512.png" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Repo Reviewer" />
+    <meta name="twitter:description" content="Instantly review any public GitHub repository or browse a user's repos — in one clean view." />
+    <meta name="twitter:image" content="https://repo-reviewer.vercel.app/icons/icon-512.png" />
   </head>
   <body>
     <div id="root"></div>

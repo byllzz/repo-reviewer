@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Search, Github, ArrowRight, Loader2 } from 'lucide-react'
 import { useReviewStore } from '../lib/store'
 
-const EXAMPLES = ['facebook/react', 'vuejs/core', 'sveltejs/svelte', 'vitejs/vite']
+const EXAMPLES = ['facebook/react', 'vuejs/core', 'sveltejs/svelte', 'torvalds']
 
 export function SearchBar() {
   const [value, setValue] = useState('')
@@ -20,7 +20,7 @@ export function SearchBar() {
           e.preventDefault()
           submit(value)
         }}
-        className={`flex items-center gap-2 bg-surface border border-border rounded-xl px-4 py-3 shadow-sm transition ${
+        className={`flex items-center gap-2 bg-surface border border-border rounded-xl px-4 py-2.5 shadow-sm transition ${
           loading ? 'opacity-70' : 'focus-within:border-accent/50'
         }`}
       >
@@ -33,13 +33,13 @@ export function SearchBar() {
           value={value}
           onChange={(e) => setValue(e.target.value)}
           disabled={loading}
-          placeholder={loading ? 'Fetching repo data…' : 'owner/repo or a github.com URL'}
+          placeholder={loading ? 'Fetching data…' : 'owner/repo, a username, or a github.com URL'}
           className="flex-1 bg-transparent outline-none text-sm placeholder:text-dim disabled:cursor-not-allowed"
         />
         <button
           type="submit"
           disabled={loading || !value.trim()}
-          className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-accent text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-accent-strong transition"
+          className="flex items-center gap-1.5 relative left-2 text-xs font-medium px-3 py-2 rounded-[5px] bg-accent text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-accent-strong transition"
         >
           {loading ? 'Loading…' : 'Review'}
           {!loading && <ArrowRight size={13} />}

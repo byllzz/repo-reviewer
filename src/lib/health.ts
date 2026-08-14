@@ -16,7 +16,7 @@ function daysSince(dateStr: string): number {
 }
 
 /**
- * A transparent, explainable heuristic — not a claim of objective "quality".
+ * A transparent, explainable heuristic - not a claim of objective "quality".
  * Each factor is visible in the UI so the score never feels like a black box.
  */
 export function computeHealth(review: RepoReview): HealthResult {
