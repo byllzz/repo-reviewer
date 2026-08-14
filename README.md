@@ -1,3 +1,16 @@
+<p align="center">
+  <a href="https://repo-reviewer.vercel.app/">
+    <img src="./src/assets//preview.png" alt="repo-reviewer Preview">
+  </a>
+</p>
+
+<p align="left">
+  <a href="https://github.com/byllzz/repo-reviewer/stargazers"><img src="https://img.shields.io/github/stars/byllzz/repo-reviewer?style=flat&color=9B26FF" /></a>
+  <a href="https://github.com/byllzz/repo-reviewer/forks"><img src="https://img.shields.io/github/forks/byllzz/repo-reviewer?style=flat&color=9B26FF" /></a>
+  <a href="https://github.com/byllzz/repo-reviewer/issues"><img src="https://img.shields.io/github/issues/byllzz/repo-reviewer?style=flat&color=9B26FF" /></a>
+</p>
+
+
 # Repo Reviewer
 
 Paste any public GitHub repo (owner/name or a full URL) and get a clean,
