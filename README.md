@@ -1,4 +1,9 @@
-
+--graph-level-0: #212124;
+  --graph-level-1: #3A3A42;
+  --graph-level-2: #555566;
+  --graph-level-3: #7A7A8E;
+  --graph-level-4: #D4D4E0;
+  
 <p align="center">
   <a href="https://repo-reviewer.vercel.app/">
     <img src="./src/assets//preview.png" alt="repo-reviewer Preview">
