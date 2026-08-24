@@ -5,9 +5,6 @@
   </a>
 </p>
 
-
-
-
 # Repo Reviewer
 
 Paste any public GitHub repo (owner/name or a full URL) and get a clean,
